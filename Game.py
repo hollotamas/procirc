@@ -6,12 +6,13 @@ from Pont import Pont
 
 
 class Game(object):
+    IMAGEPATH = "image/"
 
     def __init__(self, displaySurf: pygame.Surface, ballsCount, speed):
         self.displaySurf = displaySurf
         self.ballsCount = ballsCount
         self.speed = speed
-        self.targetCircle = Circle(self.displaySurf, color=randint(0, len(Circle.COLORS)-1), pos=(self.displaySurf.get_width() // 2, self.displaySurf.get_height() // 2), radius=30)
+        self.targetCircle = Circle(self.displaySurf, path=self.IMAGEPATH, image=randint(0, len(Circle.BALLS)-1), pos=(self.displaySurf.get_width() // 2, self.displaySurf.get_height() // 2), radius=30)
         self.pontFelirat = Pont(self.displaySurf, "Elért pont", (300, 10))
         self.ballsList = []
         self.ballsCreate()
@@ -21,7 +22,7 @@ class Game(object):
     def ballCreate(self):
         pos = (randint(0, self.displaySurf.get_width()), randint(0, self.displaySurf.get_height()))
         vec = (self.targetCircle.getPos( )[0] - pos[0], self.targetCircle.getPos( )[1] - pos[1])
-        self.ballsList.append(Circle(self.displaySurf, color=randint(0, len(Circle.COLORS) - 1), \
+        self.ballsList.append(Circle(self.displaySurf, path=self.IMAGEPATH, image=randint(0, len(Circle.BALLS)-1), \
                                      pos=pos, \
                                      radius=20, \
                                      vec=vec,
@@ -35,7 +36,7 @@ class Game(object):
         gameOver = False
         for ball in self.ballsList:
             if ball.getPos().distance_to(self.targetCircle.getPos()) < self.targetCircle.radius:
-                if ball.getColor() != self.targetCircle.getColor():
+                if ball.getImage() != self.targetCircle.getImage():
                     self.pont -= 1
                 self.clearBall(ball)
         if len(self.ballsList) < 3:
@@ -59,7 +60,7 @@ class Game(object):
             i += 1
 
         if i < len(self.ballsList):
-            self.ballsList[i].setColor(randint(0, len(Circle.COLORS)-1))
+            self.ballsList[i].setImage(randint(0, len(Circle.BALLS)-1))
 
     def clearBall(self, ball):
         self.ballsList.pop(self.ballsList.index(ball))
