@@ -6,8 +6,6 @@ class Pont(object):
         self.szoveg = felirat
         self.pos = pos
         self.myFont = pygame.font.SysFont('Verdana', 30)
-        self.felirat = self.myFont.render(self.szoveg, False, (255, 255, 255))
-
 
     def draw(self, pont):
         self.felirat = self.myFont.render("%s: %s" % (self.szoveg, pont), False, (255, 255, 255))
