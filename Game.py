@@ -11,7 +11,6 @@ class Game(object):
         self.displaySurf = displaySurf
         self.ballsCount = ballsCount
         self.speed = speed
-        self.displaySurf.fill((0, 0, 0))
         self.targetCircle = Circle(self.displaySurf, color=randint(0, len(Circle.COLORS)-1), pos=(self.displaySurf.get_width() // 2, self.displaySurf.get_height() // 2), radius=30)
         self.pontFelirat = Pont(self.displaySurf, "Elért pont", (300, 10))
         self.ballsList = []
