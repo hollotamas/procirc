@@ -1,50 +1,73 @@
 import pygame, sys
 from pygame.locals import *
+from Game import Game
 
-pygame.init()
+#https://realpython.com/pygame-a-primer/
+#https://stackoverflow.com/questions/11105836/multiple-displays-in-pygame
 
 FPS = 60
-fpsClock = pygame.time.Clock()
+WIDTH = 800
+HEIGHT = 600
 
-ablak = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("Protect Your Circle!")
+def main():
+    global FPS, FPSCLOCK, DISPLAYSURF
+    pygame.init()
+    pygame.font.init()
+    FPSCLOCK = pygame.time.Clock()
+    DISPLAYSURF = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("Protect Your Circle!")
 
-circle = pygame.image.load('kor.png')
-x = 25
-y = 25
-direction = 'right'
-
-while True:
-
-    ablak.fill((0,0,0))
-
-    if direction == 'right':
-        x += 5
-        if x > 300:
-            direction = 'down'
-
-    elif direction == 'down':
-        y += 5
-        if y > 300:
-            direction = 'left'
-
-    elif direction == 'left':
-        x -= 5
-        if x < 25:
-            direction = 'up'
-
-    elif direction == 'up':
-        y -= 5
-        if y < 25:
-            direction = 'right'
-
-    ablak.blit(circle, (x, y))
+    showStartScreen()
+    while True:
+        runGame()
+        showGameOverScreen()
 
 
-    for event in pygame.event.get():
-        if event.type == QUIT:
+def showStartScreen():
+    #pass
+    myFont = pygame.font.SysFont('Verdana', 30)
+    felirat = myFont.render("Start Game", False, (255, 255, 255))
+    pressKey = myFont.render("Press any key to continue!", True, (255, 0, 0))
+    keyUp = False
+    while not keyUp:
+        DISPLAYSURF.blit(felirat, (DISPLAYSURF.get_width() // 2 - 150, DISPLAYSURF.get_height() // 2 - 20))
+        DISPLAYSURF.blit(pressKey, (DISPLAYSURF.get_width() // 2 - 150, DISPLAYSURF.get_height() // 2 + 20))
+        if pygame.event.get(QUIT):
             pygame.quit()
             sys.exit()
+        elif pygame.event.get(KEYUP):
+            keyUp = True
+        pygame.display.update( )
+        FPSCLOCK.tick(FPS)
 
-    pygame.display.update()
-    fpsClock.tick(FPS)
+def runGame():
+    game = Game(DISPLAYSURF, 3, 1)
+    gameOver = False
+    while not gameOver:
+        gameOver = game.update()
+        for event in pygame.event.get( ):
+            if event.type == QUIT:
+                pygame.quit( )
+                sys.exit( )
+            elif event.type == MOUSEBUTTONUP:
+                game.clicked(event.pos)
+        pygame.display.update( )
+        FPSCLOCK.tick(FPS)
+
+def showGameOverScreen():
+    DISPLAYSURF.fill((0, 0, 0))
+    myFont = pygame.font.SysFont('Verdana', 30)
+    felirat = myFont.render("Game Over", False, (255, 255, 255))
+    keyUp = False
+    while not keyUp:
+        DISPLAYSURF.blit(felirat, (DISPLAYSURF.get_width( ) // 2 - 100, DISPLAYSURF.get_height( ) // 2 - 100))
+        if pygame.event.get(QUIT):
+            pygame.quit( )
+            sys.exit( )
+        elif pygame.event.get(KEYUP):
+            keyUp = True
+        pygame.display.update( )
+        FPSCLOCK.tick(FPS)
+
+if __name__ == '__main__':
+    main()
