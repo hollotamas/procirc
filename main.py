@@ -24,7 +24,6 @@ def main():
 
 
 def showStartScreen():
-    #pass
     myFont = pygame.font.SysFont('Verdana', 30)
     felirat = myFont.render("Start Game", False, (255, 255, 255))
     pressKey = myFont.render("Press any key to continue!", True, (255, 0, 0))
@@ -58,15 +57,21 @@ def showGameOverScreen():
     DISPLAYSURF.fill((0, 0, 0))
     myFont = pygame.font.SysFont('Verdana', 30)
     felirat = myFont.render("Game Over", False, (255, 255, 255))
+    pressKey = myFont.render("Press any key to new Game!", True, (255, 0, 0))
     keyUp = False
     while not keyUp:
-        DISPLAYSURF.blit(felirat, (DISPLAYSURF.get_width( ) // 2 - 100, DISPLAYSURF.get_height( ) // 2 - 100))
-        if pygame.event.get(QUIT):
+        DISPLAYSURF.blit(felirat, (DISPLAYSURF.get_width() // 2 - 150, DISPLAYSURF.get_height() // 2 - 20))
+        DISPLAYSURF.blit(pressKey, (DISPLAYSURF.get_width() // 2 - 150, DISPLAYSURF.get_height() // 2 + 20))
+        if len(pygame.event.get(QUIT)) > 0:
             pygame.quit( )
             sys.exit( )
-        elif pygame.event.get(KEYUP):
+        keyUpEvents = pygame.event.get(KEYUP)
+        if len(keyUpEvents) != 0:
+            if keyUpEvents[0].key == K_ESCAPE:
+                pygame.quit()
+                sys.exit()
             keyUp = True
-        pygame.display.update( )
+        pygame.display.update()
         FPSCLOCK.tick(FPS)
 
 if __name__ == '__main__':
