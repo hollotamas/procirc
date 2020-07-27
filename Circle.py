@@ -37,10 +37,11 @@ class Circle(object):
         self.image = self.BALLS[image]
 
     def draw(self):
+        image = pygame.image.load(os.path.join(self.path, self.image))
         self.pos = (self.pos[0] + self.speedVec[0], self.pos[1] + self.speedVec[1])
-        posInt = (int(self.pos[0]), int(self.pos[1]))
-        #pygame.draw.circle(self.displaySurf, self.getColor(), posInt, self.radius, 0)
-        self.displaySurf.blit(pygame.image.load(os.path.join(self.path, self.image)), posInt)
+        drawPos = (self.pos[0] - image.get_rect().size[0] // 2, self.pos[1] - image.get_rect().size[1] // 2)
+        posInt = (int(drawPos[0]), int(drawPos[1]))
+        self.displaySurf.blit(image, posInt)
 
     def getPos(self):
         return pygame.math.Vector2(self.pos)
