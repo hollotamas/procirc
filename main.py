@@ -19,18 +19,19 @@ def main():
 
     showStartScreen()
     while True:
-        runGame()
-        showGameOverScreen()
+        gameTime = runGame(50, 2, 1)
+        showGameOverScreen(gameTime)
 
 
 def showStartScreen():
-    myFont = pygame.font.SysFont('Verdana', 30)
-    felirat = myFont.render("Start Game", False, (255, 255, 255))
-    pressKey = myFont.render("Press any key to continue!", True, (255, 0, 0))
+    title = pygame.font.SysFont('Verdana', 50)
+    subtitle = pygame.font.SysFont('Verdana', 20)
+    felirat = title.render("Start Game", False, (255, 255, 255))
+    pressKey = subtitle.render("Press any key to continue!", True, (255, 0, 0))
     keyUp = False
     while not keyUp:
-        DISPLAYSURF.blit(felirat, (DISPLAYSURF.get_width() // 2 - 150, DISPLAYSURF.get_height() // 2 - 20))
-        DISPLAYSURF.blit(pressKey, (DISPLAYSURF.get_width() // 2 - 150, DISPLAYSURF.get_height() // 2 + 20))
+        DISPLAYSURF.blit(felirat, (DISPLAYSURF.get_width() // 2 - 150, DISPLAYSURF.get_height() // 2 - 40))
+        DISPLAYSURF.blit(pressKey, (DISPLAYSURF.get_width() // 2 - 150, DISPLAYSURF.get_height() // 2 + 10))
         if pygame.event.get(QUIT):
             pygame.quit()
             sys.exit()
@@ -39,8 +40,8 @@ def showStartScreen():
         pygame.display.update( )
         FPSCLOCK.tick(FPS)
 
-def runGame():
-    game = Game(DISPLAYSURF, 3, 1)
+def runGame(maxPont=10, balls=3, ballSpeed=1, targetRate=2, ballRate=1):
+    game = Game(DISPLAYSURF, maxPont, balls, ballSpeed, targetRate, ballRate)
     gameOver = False
     while not gameOver:
         gameOver = game.update()
@@ -52,16 +53,18 @@ def runGame():
                 game.clicked(event.pos)
         pygame.display.update( )
         FPSCLOCK.tick(FPS)
+    return str(game.elapsedTime / 1000)
 
-def showGameOverScreen():
+def showGameOverScreen(elapsedTime: str):
     DISPLAYSURF.fill((0, 0, 0))
-    myFont = pygame.font.SysFont('Verdana', 30)
-    felirat = myFont.render("Game Over", False, (255, 255, 255))
-    pressKey = myFont.render("Press any key to new Game!", True, (255, 0, 0))
+    title = pygame.font.SysFont('Verdana', 30)
+    subtitle = pygame.font.SysFont('Verdana', 20)
+    felirat = title.render("Game Over - Elapsed time: %s" % elapsedTime, False, (255, 255, 255))
+    pressKey = subtitle.render("Press any key to new Game!", True, (255, 0, 0))
     keyUp = False
     while not keyUp:
-        DISPLAYSURF.blit(felirat, (DISPLAYSURF.get_width() // 2 - 150, DISPLAYSURF.get_height() // 2 - 20))
-        DISPLAYSURF.blit(pressKey, (DISPLAYSURF.get_width() // 2 - 150, DISPLAYSURF.get_height() // 2 + 20))
+        DISPLAYSURF.blit(felirat, (DISPLAYSURF.get_width() // 2 - 250, DISPLAYSURF.get_height() // 2 - 40))
+        DISPLAYSURF.blit(pressKey, (DISPLAYSURF.get_width() // 2 - 250, DISPLAYSURF.get_height() // 2 + 10))
         if len(pygame.event.get(QUIT)) > 0:
             pygame.quit( )
             sys.exit( )
