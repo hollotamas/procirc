@@ -37,8 +37,7 @@ class Circle(object):
     def draw(self):
         self.pos = (self.pos[0] + self.speedVec[0], self.pos[1] + self.speedVec[1])
         drawPos = (self.pos[0] - self.image.get_rect().size[0] // 2, self.pos[1] - self.image.get_rect().size[1] // 2)
-        posInt = (int(drawPos[0]), int(drawPos[1]))
-        self.displaySurf.blit(self.image, posInt)
+        self.displaySurf.blit(self.image, drawPos)
 
     def getPos(self):
         return pygame.math.Vector2(self.pos)
